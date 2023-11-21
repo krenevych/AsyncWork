@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AsyncWork</string>
+    <string name="eur">EUR</string>
+    <string name="euro_uah_hint">euro|uah</string>
+    <string name="load_data">Load data</string>
+    <string name="usd_uah_hint">usd|uah</string>
+    <string name="usd">USD</string>
+</resources>
