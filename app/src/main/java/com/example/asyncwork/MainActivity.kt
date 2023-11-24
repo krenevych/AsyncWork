@@ -1,6 +1,9 @@
 package com.example.asyncwork
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.asyncwork.databinding.ActivityMainBinding
@@ -28,16 +31,21 @@ class MainActivity : AppCompatActivity() {
         get() = binding.textUSDCourse.text != "---"
                 && binding.textEuroCourse.text != "---"
 
-    fun finisLoadingCallback(){
-        if (isDataLoaded){
-            binding.loadDataButton.isEnabled = true
-            binding.progressBar.visibility = View.GONE
+    fun finisLoadingCallback() {
+
+        if (isDataLoaded) {
+            handler.post {
+                binding.loadDataButton.isEnabled = true
+                binding.progressBar.visibility = View.GONE
+            }
+
         }
     }
 
-   private fun loadButtonCallback(){
+    private val handler = Handler(Looper.getMainLooper())
+    private fun loadButtonCallback() {
 
-        with(binding){
+        with(binding) {
             //            binding.textUSDCourse.text = loadUsd().toString()
 //            binding.textEuroCourse.text = loadEuro().toString()
             loadDataButton.isEnabled = false
@@ -47,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
             loadUsd {
                 textUSDCourse.text = it.toString()
+
                 finisLoadingCallback()
             }
 
@@ -62,8 +71,11 @@ class MainActivity : AppCompatActivity() {
     private fun loadUsd(callback: (value: Float) -> Unit)//    : Float
     {
         thread {
-            Thread.sleep(3000)
+            Log.d("XXXXX", "Activity start: $this")
+            Thread.sleep(6000)
+            Log.d("XXXXX", "Activity end  : $this")
             callback(37.7f)
+
 //            return 37.7f
         }
     }
