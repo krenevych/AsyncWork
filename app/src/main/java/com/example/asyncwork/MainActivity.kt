@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.asyncwork.databinding.ActivityMainBinding
+import kotlinx.coroutines.delay
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -20,73 +21,35 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-
         binding.loadDataButton.setOnClickListener {
             loadButtonCallback()
         }
     }
 
-
-    val isDataLoaded: Boolean
-        get() = binding.textUSDCourse.text != "---"
-                && binding.textEuroCourse.text != "---"
-
-    fun finisLoadingCallback() {
-
-        if (isDataLoaded) {
-            handler.post {
-                binding.loadDataButton.isEnabled = true
-                binding.progressBar.visibility = View.GONE
-            }
-
-        }
-    }
-
-    private val handler = Handler(Looper.getMainLooper())
     private fun loadButtonCallback() {
 
         with(binding) {
-            //            binding.textUSDCourse.text = loadUsd().toString()
-//            binding.textEuroCourse.text = loadEuro().toString()
+
             loadDataButton.isEnabled = false
             progressBar.visibility = View.VISIBLE
             textUSDCourse.text = "---"
             textEuroCourse.text = "---"
-
-            loadUsd {
-                textUSDCourse.text = it.toString()
-
-                finisLoadingCallback()
-            }
-
-            loadEuro {
-                textEuroCourse.text = it.toString()
-                finisLoadingCallback()
-            }
-        }
-
-
-    }
-
-    private fun loadUsd(callback: (value: Float) -> Unit)//    : Float
-    {
-        thread {
-            Log.d("XXXXX", "Activity start: $this")
-            Thread.sleep(6000)
-            Log.d("XXXXX", "Activity end  : $this")
-            callback(37.7f)
-
-//            return 37.7f
+            textUSDCourse.text = loadUsd().toString()
+            textEuroCourse.text = loadEuro().toString()
+            binding.loadDataButton.isEnabled = true
+            binding.progressBar.visibility = View.GONE
         }
     }
 
-    private fun loadEuro(callback: (value: Float) -> Unit) //    : Float
-    {
-        thread {
-            Thread.sleep(4000)
-            callback(42.1f)
-//        return 42.1f
-        }
+    private fun loadUsd(): Float {
+//        delay(3000)
+        return 37.7f
     }
+
+    private fun loadEuro(): Float {
+//        delay(4000)
+        return 42.1f
+    }
+
 
 }
