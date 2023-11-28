@@ -6,8 +6,10 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.asyncwork.databinding.ActivityMainBinding
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -34,20 +36,23 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.VISIBLE
             textUSDCourse.text = "---"
             textEuroCourse.text = "---"
-            textUSDCourse.text = loadUsd().toString()
-            textEuroCourse.text = loadEuro().toString()
-            binding.loadDataButton.isEnabled = true
-            binding.progressBar.visibility = View.GONE
+            lifecycleScope.launch {
+                textUSDCourse.text = loadUsd().toString()
+                textEuroCourse.text = loadEuro().toString()
+
+                binding.loadDataButton.isEnabled = true
+                binding.progressBar.visibility = View.GONE
+            }
         }
     }
 
-    private fun loadUsd(): Float {
-//        delay(3000)
+    private suspend fun loadUsd(): Float {
+        delay(3000)
         return 37.7f
     }
 
-    private fun loadEuro(): Float {
-//        delay(4000)
+    private suspend fun loadEuro(): Float {
+        delay(4000)
         return 42.1f
     }
 
